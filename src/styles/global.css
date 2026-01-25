@@ -1,0 +1,174 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Cantarell', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: linear-gradient(135deg, #1e3a5f 0%, #2d5a7b 50%, #1e3a5f 100%);
+  min-height: 100vh;
+  overflow: hidden;
+  position: relative;
+}
+
+body::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(ellipse at 30% 40%, rgba(70, 130, 180, 0.3) 0%, transparent 50%),
+              radial-gradient(ellipse at 70% 60%, rgba(100, 149, 237, 0.2) 0%, transparent 50%);
+  pointer-events: none;
+}
+
+.app {
+  position: relative;
+  z-index: 1;
+}
+
+.content-section h2 {
+  color: #3d3846;
+  font-size: 20px;
+  margin-bottom: 16px;
+  border-bottom: 2px solid #3584e4;
+  padding-bottom: 8px;
+}
+
+.content-section h3 {
+  color: #3d3846;
+  font-size: 16px;
+  margin: 16px 0 8px 0;
+}
+
+.project-card {
+  background: #f6f5f4;
+  padding: 16px;
+  border-radius: 8px;
+  margin-bottom: 16px;
+  border-left: 4px solid #3584e4;
+}
+
+.project-title {
+  font-weight: 600;
+  color: #3d3846;
+  margin-bottom: 8px;
+  font-size: 15px;
+}
+
+.project-desc {
+  color: #5e5c64;
+  font-size: 13px;
+  margin-bottom: 8px;
+  line-height: 1.5;
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+.tag {
+  background: #3584e4;
+  color: white;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 500;
+}
+
+.skill-category {
+  margin-bottom: 20px;
+}
+
+.skill-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.skill-item {
+  background: #e1dedb;
+  padding: 8px 14px;
+  border-radius: 6px;
+  font-size: 13px;
+  color: #3d3846;
+  font-weight: 500;
+}
+
+.edu-item, .qual-item {
+  background: #f6f5f4;
+  padding: 16px;
+  border-radius: 8px;
+  margin-bottom: 12px;
+}
+
+.edu-title, .qual-title {
+  font-weight: 600;
+  color: #3d3846;
+  font-size: 15px;
+}
+
+.edu-institution, .qual-issuer {
+  color: #5e5c64;
+  font-size: 13px;
+  margin-top: 4px;
+}
+
+.edu-year {
+  color: #3584e4;
+  font-size: 12px;
+  margin-top: 4px;
+  font-weight: 500;
+}
+
+.folder-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 24px;
+  padding: 20px;
+}
+
+.folder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.folder:hover {
+  transform: translateY(-4px);
+}
+
+.folder-icon {
+  width: 80px;
+  height: 70px;
+  background: linear-gradient(135deg, #62a0ea 0%, #3584e4 100%);
+  border-radius: 8px 8px 4px 4px;
+  position: relative;
+  margin-bottom: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.folder-icon::before {
+  content: '';
+  position: absolute;
+  top: -8px;
+  left: 0;
+  width: 40px;
+  height: 8px;
+  background: linear-gradient(135deg, #62a0ea 0%, #3584e4 100%);
+  border-radius: 4px 4px 0 0;
+}
+
+.folder-label {
+  font-size: 13px;
+  color: #3d3846;
+  text-align: center;
+  font-weight: 500;
+}
