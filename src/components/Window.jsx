@@ -19,16 +19,28 @@ const Window = ({
 
   if (minimized) return null;
 
+  // Get topbar height from CSS variable or use default
+  const getTopBarHeight = () => {
+    if (typeof window !== 'undefined') {
+      const root = document.documentElement;
+      const topbarHeight = getComputedStyle(root).getPropertyValue('--topbar-height').trim();
+      return topbarHeight || '48px';
+    }
+    return '48px';
+  };
+
+  const topBarHeight = getTopBarHeight();
+
   const windowStyle = maximized
     ? { 
         width: '100vw', 
-        height: 'calc(100vh - 32px)', // Subtract top bar height
-        top: '32px', // Start below top bar
+        height: `calc(100vh - ${topBarHeight})`,
+        top: topBarHeight,
         left: 0, 
         borderRadius: 0,
         opacity: isVisible ? 1 : 0,
         transform: isVisible ? 'scale(1)' : 'scale(0.95)',
-        transition: 'all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)'
+        transition: 'opacity 0.3s ease, transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)'
       }
     : {
         width: '800px',
@@ -36,7 +48,7 @@ const Window = ({
         top: `${position.y}px`,
         opacity: isVisible ? 1 : 0,
         transform: isVisible ? 'translateY(0)' : 'translateY(20px)',
-        transition: 'all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)'
+        transition: 'opacity 0.3s ease, transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)'
       };
 
   const getTitle = () => {
@@ -47,7 +59,8 @@ const Window = ({
       qualifications: 'Qualifications',
       education: 'Education',
       experience: 'Experience',
-      terminal: 'Terminal'
+      terminal: 'Terminal',
+      contact: 'Contact'
     };
     return titles[id] || 'Window';
   };
@@ -59,7 +72,7 @@ const Window = ({
 
   return (
     <div className="window" style={{ ...windowStyle, zIndex }}>
-      <div className="window-header" onMouseDown={(e) => onMouseDown(e, id)}>
+      <div className="window-header" onMouseDown={(e) => !maximized && onMouseDown(e, id)}>
         <div className="window-title">{getTitle()}</div>
         <div className="window-controls">
           <button 
