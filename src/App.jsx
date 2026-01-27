@@ -11,6 +11,7 @@ import EducationWindow from './components/windows/EducationWindow';
 import ExperienceWindow from './components/windows/ExperienceWindow';
 import TerminalWindow from './components/windows/TerminalWindow';
 import useWindowManager from './hooks/useWindowManager';
+import ContactWindow from './components/windows/ContactWindow';
 import './styles/App.css';
 
 function App() {
@@ -83,6 +84,7 @@ function App() {
           {windowState.id === 'education' && <EducationWindow />}
           {windowState.id === 'experience' && <ExperienceWindow />}
           {windowState.id === 'terminal' && <TerminalWindow />}
+          {windowState.id === 'contact' && <ContactWindow />}
         </Window>
       ))}
 

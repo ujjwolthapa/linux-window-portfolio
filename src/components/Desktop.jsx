@@ -1,14 +1,25 @@
+// src/components/Desktop.jsx
 import React from 'react';
 import DesktopIcon from './DesktopIcon';
 
 const Desktop = ({ onOpenWindow }) => {
   return (
     <div className="desktop">
-      <DesktopIcon
-        icon="∞"
-        label="DevOps"
-        onClick={() => onOpenWindow('main')}
-      />
+      <div className="desktop-icons-container">
+        <DesktopIcon
+          icon="∞"
+          label="DevOps"
+          onClick={() => onOpenWindow('main')}
+        />
+        
+        <DesktopIcon
+          icon="✉️"
+          label="Contact"
+          onClick={() => onOpenWindow('contact')}
+        />
+        
+        {/* Add more icons here later if needed */}
+      </div>
     </div>
   );
 };
