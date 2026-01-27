@@ -52,7 +52,7 @@ function App() {
     return (
       <div className="loading-screen">
         <div className="loading-content">
-          <div className="loading-logo">🐧</div>
+          <div className="loading-logo">∞</div>
           <div className="loading-text">Linux Desktop Portfolio</div>
           <div className="loading-progress">
             <div className="loading-bar"></div>

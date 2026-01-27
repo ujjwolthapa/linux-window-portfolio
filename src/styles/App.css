@@ -2,6 +2,39 @@
    MODERN RESPONSIVE PORTFOLIO
    ========================================== */
 
+/* ==========================================
+   BACKGROUND IMAGE
+   ========================================== */
+
+body {
+  background: 
+    /* Your wallpaper */
+    url('/wallpapers/background.jpg') center/cover fixed,
+    /* Fallback gradient */
+    linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
+  min-height: 100vh;
+  position: relative;
+}
+
+/* Dark overlay for readability */
+body::after {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(15, 23, 42, 0.7); /* Dark blue overlay - adjust opacity as needed */
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Ensure content is above overlay */
+.App {
+  position: relative;
+  z-index: 1;
+}
+
 /* Top Bar - Modern Glassmorphism */
 .top-bar {
   position: fixed;
@@ -137,8 +170,10 @@
 
 .desktop-icons-container {
   display: flex;
-  flex-direction: column;
+  flex-wrap: wrap;
   gap: var(--spacing-xl);
+  padding: var(--spacing-xl);
+  justify-content: flex-start !important; /* FORCE LEFT ALIGNMENT */
   align-items: flex-start;
 }
 
@@ -811,8 +846,15 @@
 
 .terminal-input-form {
   display: flex;
+  width: 100%;
+}
+
+.terminal-input-line {
+  display: flex;
   align-items: center;
-  margin-top: 6px;
+  width: 100%;
+  min-height: 24px;
+  position: relative;
 }
 
 .terminal-input {
@@ -824,6 +866,28 @@
   font-size: 14px;
   outline: none;
   caret-color: var(--color-accent);
+  min-width: 50px;
+  height: 24px;
+  line-height: 24px;
+  padding: 0;
+  margin: 0;
+}
+
+/* Terminal cursor */
+.terminal-cursor {
+  display: inline-block;
+  width: 8px;
+  height: 18px;
+  background-color: var(--color-accent);
+  animation: blink 1s infinite;
+  margin-left: 2px;
+  vertical-align: middle;
+}
+
+/* Blink animation */
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
 }
 
 .command-success {
@@ -1053,11 +1117,14 @@
   
   .desktop-icons-container {
     gap: var(--spacing-lg);
-    align-items: center;
+    padding: var(--spacing-lg);
+    justify-content: flex-start !important; /* FORCE LEFT ALIGNMENT ON MOBILE */
+    align-items: flex-start;
   }
   
   .desktop-icon {
     width: 85px;
+    margin: 0 !important; /* Remove any centering */
   }
   
   .icon-symbol {
@@ -1068,6 +1135,37 @@
   
   .icon-label {
     font-size: 12px;
+  }
+  
+  /* Terminal Mobile Fixes */
+  .terminal-content {
+    padding: var(--spacing-md);
+    font-size: 13px;
+  }
+  
+  .terminal-input-line {
+    min-height: 22px;
+    align-items: flex-start;
+  }
+  
+  .terminal-input {
+    font-size: 13px;
+    height: 22px;
+    line-height: 22px;
+    min-width: 40px;
+  }
+  
+  .prompt {
+    font-size: 13px;
+    margin-right: 6px;
+    line-height: 22px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  
+  .terminal-cursor {
+    width: 7px;
+    height: 16px;
   }
   
   /* Windows */
@@ -1171,6 +1269,7 @@
   .desktop-icons-container {
     gap: var(--spacing-md);
     width: 100%;
+    padding: var(--spacing-md);
   }
   
   .desktop-icon {
@@ -1186,6 +1285,26 @@
   
   .icon-label {
     font-size: 11px;
+  }
+  
+  /* Terminal */
+  .terminal-content {
+    padding: var(--spacing-sm);
+    font-size: 12px;
+  }
+  
+  .terminal-input {
+    font-size: 12px;
+  }
+  
+  .prompt {
+    font-size: 12px;
+    margin-right: 4px;
+  }
+  
+  .terminal-cursor {
+    width: 6px;
+    height: 14px;
   }
   
   /* Windows - Full Screen */
@@ -1282,16 +1401,6 @@
     height: 44px;
     font-size: 20px;
     flex-shrink: 0;
-  }
-  
-  /* Terminal */
-  .terminal-content {
-    padding: var(--spacing-sm);
-    font-size: 13px;
-  }
-  
-  .terminal-input {
-    font-size: 13px;
   }
   
   /* Contact */

@@ -6,6 +6,7 @@ const TerminalWindow = () => {
   const [history, setHistory] = useState([]);
   const [historyIndex, setHistoryIndex] = useState(-1);
   const terminalRef = useRef(null);
+  const inputRef = useRef(null);
 
   const commands = {
     'help': 'Available commands: help, about, skills, projects, education, experience, clear, date, echo, ls, pwd',
@@ -58,13 +59,6 @@ const TerminalWindow = () => {
     setHistory(prev => [...prev, command]);
     setHistoryIndex(-1);
     setCommand('');
-    
-    // Auto-scroll to bottom
-    setTimeout(() => {
-      if (terminalRef.current) {
-        terminalRef.current.scrollTop = terminalRef.current.scrollHeight;
-      }
-    }, 10);
   };
 
   const handleKeyDown = (e) => {
@@ -97,6 +91,32 @@ const TerminalWindow = () => {
     }
   };
 
+  // Auto-scroll to bottom when output changes
+  useEffect(() => {
+    if (terminalRef.current) {
+      terminalRef.current.scrollTop = terminalRef.current.scrollHeight;
+    }
+  }, [output]);
+
+  // Focus input on mobile tap
+  useEffect(() => {
+    const handleClick = () => {
+      if (window.innerWidth <= 768 && inputRef.current) {
+        inputRef.current.focus();
+      }
+    };
+    
+    document.addEventListener('click', handleClick);
+    return () => document.removeEventListener('click', handleClick);
+  }, []);
+
+  // Focus input on mount
+  useEffect(() => {
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, []);
+
   // Initial terminal message
   useEffect(() => {
     setOutput([
@@ -112,22 +132,31 @@ const TerminalWindow = () => {
         {output.map((line, index) => (
           <div key={index} className={`terminal-line ${line.type}`}>
             {line.type === 'input' && (
-              <span className="prompt">$ devops@portfolio:~$ </span>
+              <div className="input-line">
+                <span className="prompt">$ devops@portfolio:~$ </span>
+                <span className="command-text">{line.text}</span>
+              </div>
             )}
-            <span>{line.text}</span>
+            {line.type === 'output' && <span>{line.text}</span>}
           </div>
         ))}
+        
         <form onSubmit={handleSubmit} className="terminal-input-form">
-          <span className="prompt">$ devops@portfolio:~$ </span>
-          <input
-            type="text"
-            value={command}
-            onChange={(e) => setCommand(e.target.value)}
-            onKeyDown={handleKeyDown}
-            className="terminal-input"
-            autoFocus
-            spellCheck="false"
-          />
+          <div className="terminal-input-line">
+            <span className="prompt">$ devops@portfolio:~$ </span>
+            <input
+              ref={inputRef}
+              type="text"
+              value={command}
+              onChange={(e) => setCommand(e.target.value)}
+              onKeyDown={handleKeyDown}
+              className="terminal-input"
+              autoFocus
+              spellCheck="false"
+              aria-label="Terminal command input"
+            />
+            <span className="terminal-cursor"></span>
+          </div>
         </form>
       </div>
     </div>

@@ -8,7 +8,7 @@ const Desktop = ({ onOpenWindow }) => {
       <div className="desktop-icons-container">
         <DesktopIcon
           icon="∞"
-          label="DevOps"
+          label="My Folder"
           onClick={() => onOpenWindow('main')}
         />
         
