@@ -53,11 +53,11 @@ function App() {
       <div className="loading-screen">
         <div className="loading-content">
           <div className="loading-logo">∞</div>
-          <div className="loading-text">Linux Desktop Portfolio</div>
+          <div className="loading-text">SYS Admin's Portfolio</div>
           <div className="loading-progress">
             <div className="loading-bar"></div>
           </div>
-          <div className="loading-subtext">Initializing DevOps Environment...</div>
+          <div className="loading-subtext">Initializing  Environment...</div>
         </div>
       </div>
     );
