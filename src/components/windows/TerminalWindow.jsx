@@ -7,6 +7,7 @@ const TerminalWindow = () => {
   const [historyIndex, setHistoryIndex] = useState(-1);
   const terminalRef = useRef(null);
   const inputRef = useRef(null);
+  const [isClearing, setIsClearing] = useState(false);
 
   const commands = {
     'help': 'Available commands: help, about, skills, projects, education, experience, clear, date, echo, ls, pwd',
@@ -30,8 +31,14 @@ const TerminalWindow = () => {
     const lowerCmd = baseCmd.toLowerCase();
     
     let response = '';
+    let clearTerminal = false;
     
     if (commands[lowerCmd]) {
+      if (lowerCmd === 'clear') {
+        clearTerminal = true;
+        setIsClearing(true);
+      }
+      
       if (typeof commands[lowerCmd] === 'function') {
         response = commands[lowerCmd](args);
       } else {
@@ -41,22 +48,36 @@ const TerminalWindow = () => {
       response = `Command not found: ${baseCmd}. Type 'help' for available commands.`;
     }
 
-    return response;
+    return { response, clearTerminal };
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!command.trim()) return;
+    const cmd = command.trim();
+    if (!cmd) return;
 
-    const newOutput = [...output, { type: 'input', text: command }];
-    const response = executeCommand(command);
+    // Execute command and get response
+    const { response, clearTerminal } = executeCommand(cmd);
+    
+    // Handle clear command specially
+    if (clearTerminal) {
+      // Add the clear command to history but don't show it in output
+      setHistory(prev => [...prev, cmd]);
+      setHistoryIndex(-1);
+      setCommand('');
+      // Clear will happen immediately via the commands.clear() function
+      return;
+    }
+    
+    // For other commands, add to output
+    const newOutput = [...output, { type: 'input', text: cmd }];
     
     if (response) {
       newOutput.push({ type: 'output', text: response });
     }
     
     setOutput(newOutput);
-    setHistory(prev => [...prev, command]);
+    setHistory(prev => [...prev, cmd]);
     setHistoryIndex(-1);
     setCommand('');
   };
@@ -88,15 +109,24 @@ const TerminalWindow = () => {
       if (suggestions.length === 1) {
         setCommand(suggestions[0]);
       }
+    } else if (e.key === 'Enter') {
+      // Handle clear command on Enter
+      if (command.trim().toLowerCase() === 'clear') {
+        setTimeout(() => {
+          setIsClearing(false);
+        }, 50);
+      }
     }
   };
 
   // Auto-scroll to bottom when output changes
   useEffect(() => {
-    if (terminalRef.current) {
-      terminalRef.current.scrollTop = terminalRef.current.scrollHeight;
+    if (terminalRef.current && !isClearing) {
+      setTimeout(() => {
+        terminalRef.current.scrollTop = terminalRef.current.scrollHeight;
+      }, 10);
     }
-  }, [output]);
+  }, [output, isClearing]);
 
   // Focus input on mobile tap
   useEffect(() => {
@@ -110,12 +140,25 @@ const TerminalWindow = () => {
     return () => document.removeEventListener('click', handleClick);
   }, []);
 
-  // Focus input on mount
+  // Focus input on mount and after clear
   useEffect(() => {
     if (inputRef.current) {
-      inputRef.current.focus();
+      const timeout = setTimeout(() => {
+        inputRef.current.focus();
+      }, isClearing ? 50 : 0);
+      return () => clearTimeout(timeout);
     }
-  }, []);
+  }, [isClearing]);
+
+  // Reset clearing state after animation
+  useEffect(() => {
+    if (isClearing) {
+      const timeout = setTimeout(() => {
+        setIsClearing(false);
+      }, 100);
+      return () => clearTimeout(timeout);
+    }
+  }, [isClearing]);
 
   // Initial terminal message
   useEffect(() => {
@@ -126,9 +169,20 @@ const TerminalWindow = () => {
     ]);
   }, []);
 
+  // Add clear command to history without showing it
+  const clearOutput = () => {
+    setHistory(prev => [...prev, 'clear']);
+    setHistoryIndex(-1);
+    setOutput([]);
+    setCommand('');
+  };
+
   return (
     <div className="terminal-window">
-      <div className="terminal-content" ref={terminalRef}>
+      <div 
+        className={`terminal-content ${isClearing ? 'clearing' : ''}`} 
+        ref={terminalRef}
+      >
         {output.map((line, index) => (
           <div key={index} className={`terminal-line ${line.type}`}>
             {line.type === 'input' && (

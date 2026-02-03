@@ -1516,3 +1516,91 @@ body::after {
     transform: translateY(-4px) scale(0.95);
   }
 }
+
+
+/* terminal */
+/* Terminal clearing animation */
+.terminal-content.clearing {
+  animation: terminalClear 0.3s ease-out forwards;
+}
+
+@keyframes terminalClear {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.3;
+    transform: scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Terminal cursor animation */
+.terminal-cursor {
+  display: inline-block;
+  width: 8px;
+  height: 16px;
+  background-color: #33ff66;
+  margin-left: 2px;
+  animation: cursorBlink 1s infinite;
+  vertical-align: middle;
+}
+
+@keyframes cursorBlink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+
+/* Terminal input line styles */
+.terminal-input-line {
+  display: flex;
+  align-items: center;
+  position: relative;
+  min-height: 20px;
+}
+
+.input-line {
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.command-text {
+  color: #33ff66;
+}
+
+/* Ensure terminal input is properly aligned */
+.terminal-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  color: #f8f8f8;
+  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+  font-size: 14px;
+  outline: none;
+  caret-color: transparent; /* Hide default cursor */
+  padding: 0;
+  margin: 0;
+  min-width: 10px;
+}
+
+.terminal-input:focus {
+  outline: none;
+}
+
+/* Hide the terminal input cursor when not focused */
+.terminal-input:focus + .terminal-cursor {
+  display: inline-block;
+}
+
+/* Make prompt non-selectable */
+.prompt {
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
