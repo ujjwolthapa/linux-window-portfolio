@@ -1,0 +1,5 @@
+# robots.txt — ujjwolthapa.com.np
+User-agent: *
+Allow: /
+
+Sitemap: https://ujjwolthapa.com.np/sitemap.xml

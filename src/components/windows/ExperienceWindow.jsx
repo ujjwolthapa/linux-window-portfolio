@@ -10,7 +10,13 @@ const ExperienceWindow = () => {
           <div className="project-title">{exp.title}</div>
           <div className="edu-institution">{exp.company}</div>
           <div className="edu-year">{exp.period}</div>
-          <div className="project-desc">{exp.description}</div>
+          <div className="project-desc">
+  <ul>
+    {exp.description.map((item, i) => (
+      <li key={i}>{item}</li>
+    ))}
+  </ul>
+</div>
         </div>
       ))}
     </div>
